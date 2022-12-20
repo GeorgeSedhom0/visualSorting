@@ -139,67 +139,75 @@ export const countingSort = (
   sort();
 };
 
+interface arrProps {
+  start: number;
+  end: number;
+}
+
 export const mergeSort = (
   arr: number[],
   setArr: (arr: number[]) => void,
   speed: number
 ) => {
-  const mergeAndSort = (left: number[], right: number[]) => {
-    let result: number[] = [...left, ...right];
-    let leftIndex = 0;
-    let rightIndex = 0;
+  const mergeAndSort = (leftArr: arrProps, rightArr: arrProps) => {
+    let leftIndex = leftArr.start;
+    let rightIndex = rightArr.start;
+
+    let index = leftArr.start;
+
+    const resultArr: number[] = [...arr];
 
     const sort = () => {
-      if (leftIndex < left.length) {
-        if (left[leftIndex] < right[rightIndex]) {
-          result[leftIndex + rightIndex] = left[leftIndex];
-          result[leftIndex + rightIndex + 1] = right[rightIndex];
+      if (leftIndex < leftArr.end && rightIndex < rightArr.end) {
+        if (arr[leftIndex] < arr[rightIndex]) {
+          resultArr[index] = arr[leftIndex];
+          resultArr[index + 1] = arr[rightIndex];
+
+          leftIndex++;
+          rightIndex++;
+          index += 2;
         } else {
-          result[leftIndex + rightIndex] = right[rightIndex];
-          result[leftIndex + rightIndex + 1] = left[leftIndex];
+          resultArr[index] = arr[rightIndex];
+          resultArr[index + 1] = arr[leftIndex];
+
+          leftIndex++;
+          rightIndex++;
+          index += 2;
         }
-        rightIndex++;
-        leftIndex++;
-        sort();
+
+        arr = [...resultArr];
+        setArr([...resultArr]);
+
+        setTimeout(sort, speed);
       }
     };
     sort();
-    return result;
   };
-  const split = (arr: number[]) => {
-    let index = 1;
-    const middle = Math.floor(arr.length / 2);
-    const left = arr.slice(0, middle);
-    const right = arr.slice(middle);
 
-    const splitAndMerge = (left: number[], right: number[]): number[] => {
-      let merged = [];
+  const spliter = () => {
+    const spliterValue = Math.floor(arr.length / 2);
 
-      if (index === left.length) {
-        merged = mergeAndSort(left, right);
-        return merged;
-      } else {
-        const leftLeft = left.slice(0, left.length / 2);
-        const leftRight = left.slice(left.length / 2);
-        const rightLeft = right.slice(0, right.length / 2);
-        const rightRight = right.slice(right.length / 2);
-
-        const leftMerged = splitAndMerge(leftLeft, leftRight);
-        const rightMerged = splitAndMerge(rightLeft, rightRight);
-        index++;
-
-        if (index < arr.length / 2) {
-          merged = splitAndMerge(leftMerged, rightMerged);
-        } else {
-          merged = mergeAndSort(leftMerged, rightMerged);
+    for (let i = 1; i < spliterValue; i++) {
+      let index = 0;
+      const sort = () => {
+        mergeAndSort(
+          {
+            start: index,
+            end: index + i,
+          },
+          {
+            start: index + i,
+            end: index + i * 2,
+          }
+        );
+        index += i * 2;
+        if (index < arr.length) {
+          setTimeout(sort, speed * i);
         }
-        return merged;
-      }
-    };
-
-    const sorted = splitAndMerge(left, right);
-    setArr([...sorted]);
+      };
+      sort();
+    }
   };
 
-  split(arr);
+  spliter();
 };
