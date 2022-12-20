@@ -138,3 +138,64 @@ export const countingSort = (
   };
   sort();
 };
+
+export const mergeSort = (
+  arr: number[],
+  setArr: (arr: number[]) => void,
+  speed: number
+) => {
+  const mergeAndSort = (left: number[], right: number[]) => {
+    let result: number[] = [...left, ...right];
+    let leftIndex = 0;
+    let rightIndex = 0;
+
+    const sort = () => {
+      if (leftIndex < left.length) {
+        if (left[leftIndex] < right[rightIndex]) {
+          result[leftIndex + rightIndex] = left[leftIndex];
+          result[leftIndex + rightIndex + 1] = right[rightIndex];
+        } else {
+          result[leftIndex + rightIndex] = right[rightIndex];
+          result[leftIndex + rightIndex + 1] = left[leftIndex];
+        }
+        rightIndex++;
+        leftIndex++;
+        sort();
+      }
+    };
+    sort();
+    return result;
+  };
+  const split = (arr: number[]) => {
+    let index = 1;
+    const middle = Math.floor(arr.length / 2);
+    const left = arr.slice(0, middle);
+    const right = arr.slice(middle);
+
+    const splitAndMerge = (left: number[], right: number[]): number[] => {
+      let merged = [];
+
+      if (index === left.length) {
+        merged = mergeAndSort(left, right);
+        return merged;
+      } else {
+        const leftLeft = left.slice(0, left.length / 2);
+        const leftRight = left.slice(left.length / 2);
+        const rightLeft = right.slice(0, right.length / 2);
+        const rightRight = right.slice(right.length / 2);
+
+        const leftMerged = splitAndMerge(leftLeft, leftRight);
+        const rightMerged = splitAndMerge(rightLeft, rightRight);
+        index++;
+
+        merged = mergeAndSort(leftMerged, rightMerged);
+        return merged;
+      }
+    };
+
+    const sorted = splitAndMerge(left, right);
+    setArr([...sorted]);
+  };
+
+  split(arr);
+};

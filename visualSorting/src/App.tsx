@@ -5,6 +5,7 @@ import {
   insertionSort,
   selectionSort,
   countingSort,
+  mergeSort,
 } from "./sorting/sortings";
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           width: "100%",
           gap: "10px",
           marginTop: "20px",
+          flexWrap: "wrap",
         }}
       >
         <button onClick={() => bubbleSort(arr, setArr, speed)}>
@@ -78,6 +80,9 @@ function App() {
         </button>
         <button onClick={() => countingSort(arr, setArr, speed)}>
           Counting Sort
+        </button>
+        <button onClick={() => mergeSort(arr, setArr, speed)}>
+          Merge Sort
         </button>
         <button onClick={shuffle}>Shuffle</button>
         amount
