@@ -188,7 +188,11 @@ export const mergeSort = (
         const rightMerged = splitAndMerge(rightLeft, rightRight);
         index++;
 
-        merged = mergeAndSort(leftMerged, rightMerged);
+        if (index < arr.length / 2) {
+          merged = splitAndMerge(leftMerged, rightMerged);
+        } else {
+          merged = mergeAndSort(leftMerged, rightMerged);
+        }
         return merged;
       }
     };
