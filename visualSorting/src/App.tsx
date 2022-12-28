@@ -20,6 +20,7 @@ const App = () => {
               </button>
               {/* link to /search */}
               <h1>visual searching</h1>
+              demo
               <button>
                 <Link to="/search">Search</Link>
               </button>
