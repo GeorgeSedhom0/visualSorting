@@ -13,11 +13,13 @@ const App = () => {
           path="/"
           element={
             <div className="app">
+              <h1>Visual Sorting</h1>
               {/* link to /sort */}
               <button>
                 <Link to="/sort">Sorting</Link>
               </button>
               {/* link to /search */}
+              <h1>visual searching</h1>
               <button>
                 <Link to="/search">Search</Link>
               </button>
